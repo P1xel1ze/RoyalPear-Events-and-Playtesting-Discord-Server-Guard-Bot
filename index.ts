@@ -27,10 +27,10 @@ client.on('clientReady', async () => {
 	// emojiArray = Array.from((await client.application!.emojis.fetch()).values())
 	// .map(e => e.animated ? `<a:${e.name}:${e.id}>` : `<:${e.name}:${e.id}>`);
 	client.user!.setPresence({
-		status: "dnd", // online | idle | dnd | invisible
+		status: process.env.STATUS as Discord.PresenceStatusData,
 		activities: [{
 			type: Discord.ActivityType.Watching,
-			name: "The Prisoners"
+			name: process.env.WATCHING!
 		}],
 	});
 	console.log(chalk.green.bold(`Logged in as ${client.user!.tag}`));

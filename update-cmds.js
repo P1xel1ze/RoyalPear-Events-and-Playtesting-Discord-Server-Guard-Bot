@@ -8,5 +8,5 @@ const cmds = [
 ].map(c=>{return c.toJSON()})
 
 console.log(chalk.yellow.bold('Registering slash commands...'));
-await new REST({ version: '10' }).setToken(process.env.BOT_TOKEN).put(Routes.applicationCommands(process.env.APP_ID), { body: cmds });
+await new REST({ version: '10' }).setToken(process.env.BOT_TOKEN).put(Routes.applicationCommands(process.env.APPLICATION_ID), { body: cmds });
 console.log(chalk.green.bold('Slash commands registered!'));
