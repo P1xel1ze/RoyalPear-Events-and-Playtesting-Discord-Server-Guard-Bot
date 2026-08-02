@@ -1,0 +1,9 @@
+# Secrets & config
+.env
+
+# Package stuff
+pnpm-lock.yaml
+node_modules
+
+# Prisoner list
+prisoners.json
