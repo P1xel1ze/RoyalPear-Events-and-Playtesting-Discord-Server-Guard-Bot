@@ -2,8 +2,8 @@ import { REST, SlashCommandBuilder, PermissionFlagsBits, Routes } from 'discord.
 import chalk from 'chalk';
 
 const cmds = [
-	new SlashCommandBuilder().setName('imprison').setDescription('Send a user to prison').addUserOption(o=>o.setName('evildoer').setDescription('The naughty person to imprison').setRequired(true)),
-	new SlashCommandBuilder().setName('prisoners').setDescription('Lists prisoners that have been imprisoned'),
+	new SlashCommandBuilder().setName('imprison').setDescription('Sends a user to prison').addUserOption(o=>o.setName('evildoer').setDescription('The naughty person to imprison').setRequired(true)),
+	new SlashCommandBuilder().setName('prisoners').setDescription('Lists users that have been imprisoned'),
 	new SlashCommandBuilder().setName('release').setDescription('Releases a user from prison')
 ].map(c=>{return c.toJSON()})
 

@@ -63,6 +63,10 @@ client.on('interactionCreate', async act => {
 			if (index !== -1) prisoners.splice(index, 1);
 			writeFileSync('prisoners.json', JSON.stringify(prisoners))
 		} else if (act.commandName === 'prisoners') {
+			if (prisoners.length === 0) {
+				await act.reply({ content: 'No prisoners', flags: Discord.MessageFlags.Ephemeral })
+				return
+			}
 			let list: string[] = [];
 			for (let i of prisoners) {
 				list.push(((await client.users.fetch(i)).username))
