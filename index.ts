@@ -18,6 +18,9 @@ const client = new Discord.Client({
 function logError(msg: any): void {
 	console.error(chalk.red.bold(msg))
 }
+async function reply(act: Discord.ChatInputCommandInteraction, msg: string) {
+	return act.reply({ content: msg, flags: Discord.MessageFlags.Ephemeral })
+}
 
 // let emojiArray;
 client.on('clientReady', async () => {
@@ -37,7 +40,12 @@ client.on('interactionCreate', async act => {
 	try {
 		if (!act.isChatInputCommand()) return;
 		if (act.commandName === 'imprison') {
-			prisoners.push(act.options.getUser('evildoer', true).id as never)
+			const newPrisonerID = act.options.getUser('evildoer', true).id
+			if (prisoners.includes(newPrisonerID)) {
+				await reply(act, 'Already a prisoner')
+				return
+			}
+			prisoners.push(newPrisonerID as never)
 			writeFileSync('prisoners.json', JSON.stringify(prisoners))
 			for (let i of prisoners) {
 				try {
@@ -48,14 +56,14 @@ client.on('interactionCreate', async act => {
 						try {
 							await channel.bulkDelete(fetchedMsgs.filter(m => m.author.id === i));
 						} catch {
-							await act.reply({ content: 'Messages older than 14 days, did not delete', flags: Discord.MessageFlags.Ephemeral })
+							await reply(act, 'Messages older than 14 days, did not delete')
 						}
 					}
 				} catch {
-					await act.reply({ content: 'An error occurred', flags: Discord.MessageFlags.Ephemeral })
+					await reply(act, 'An error occurred')
 				}
 			}
-			await act.reply({ content: 'Sent evildoer to prison', flags: Discord.MessageFlags.Ephemeral });
+			await reply(act, 'Sent evildoer to prison');
 		} else if (act.commandName === 'release') {
 			let prisoner: Discord.User = act.options.getUser('prisoner', true);
 			(await act.guild?.members.fetch(prisoner))!.roles.set([process.env.REG_USR_ROLE_ID!])
@@ -64,14 +72,14 @@ client.on('interactionCreate', async act => {
 			writeFileSync('prisoners.json', JSON.stringify(prisoners))
 		} else if (act.commandName === 'prisoners') {
 			if (prisoners.length === 0) {
-				await act.reply({ content: 'No prisoners', flags: Discord.MessageFlags.Ephemeral })
+				await reply(act, 'No prisoners')
 				return
 			}
 			let list: string[] = [];
 			for (let i of prisoners) {
 				list.push(((await client.users.fetch(i)).username))
 			}
-			await act.reply({ content: '@' + list.join(', @'), flags: Discord.MessageFlags.Ephemeral })
+			await reply(act, '@' + list.join(', @'))
 		}
 	} catch (e) {logError(e)}
 });
