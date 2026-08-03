@@ -29,8 +29,8 @@ client.on('clientReady', async () => {
 	client.user!.setPresence({
 		status: process.env.STATUS as Discord.PresenceStatusData,
 		activities: [{
-			type: Discord.ActivityType.Watching,
-			name: process.env.WATCHING!
+			type: Number(process.env.ACTIVITY_TYPE) as Discord.ActivityType,
+			name: process.env.ACTIVITY_INFO!
 		}],
 	});
 	console.log(chalk.green.bold(`Logged in as ${client.user!.tag}`));
