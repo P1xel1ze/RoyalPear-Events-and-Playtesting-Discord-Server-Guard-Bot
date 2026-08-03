@@ -4,7 +4,7 @@ import chalk from 'chalk';
 const cmds = [
 	new SlashCommandBuilder().setName('imprison').setDescription('Sends a user to prison').addUserOption(o=>o.setName('evildoer').setDescription('The naughty person to imprison').setRequired(true)),
 	new SlashCommandBuilder().setName('prisoners').setDescription('Lists users that have been imprisoned'),
-	new SlashCommandBuilder().setName('release').setDescription('Releases a user from prison')
+	new SlashCommandBuilder().setName('release').setDescription('Releases a user from prison').addUserOption(o=>o.setName('prisoner').setDescription('The person to release from prison').setRequired(true)),
 ].map(c=>{return c.toJSON()})
 
 console.log(chalk.yellow.bold('Registering slash commands...'));
