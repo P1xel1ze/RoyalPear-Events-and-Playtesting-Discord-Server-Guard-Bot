@@ -2,7 +2,7 @@
   "name": "guard-bot",
   "version": "1.0.0",
   "description": "A Discord bot for one of RoyalPear's servers",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "author": "P1xel1ze",
   "type": "module",
   "main": "index.ts",
