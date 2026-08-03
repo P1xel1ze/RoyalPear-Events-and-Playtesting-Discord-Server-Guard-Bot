@@ -41,7 +41,7 @@ client.on('interactionCreate', async act => {
 		if (!act.isChatInputCommand()) return;
 		if (act.commandName === 'imprison') {
 			const newPrisonerID = act.options.getUser('evildoer', true).id
-			if (prisoners.includes(newPrisonerID)) {
+			if (prisoners.includes(newPrisonerID as never)) {
 				await reply(act, 'Already a prisoner')
 				return
 			}
@@ -66,10 +66,12 @@ client.on('interactionCreate', async act => {
 			await reply(act, 'Sent evildoer to prison');
 		} else if (act.commandName === 'release') {
 			let prisoner: Discord.User = act.options.getUser('prisoner', true);
-			(await act.guild?.members.fetch(prisoner))!.roles.set([process.env.REG_USR_ROLE_ID!])
+			if (process.env.REG_USER_ROLE_ID === undefined) (await act.guild?.members.fetch(prisoner))!.roles.set([])
+			else (await act.guild?.members.fetch(prisoner))!.roles.set([process.env.REG_USR_ROLE_ID!])
 			let index = prisoners.indexOf(prisoner.id as never)
 			if (index !== -1) prisoners.splice(index, 1);
 			writeFileSync('prisoners.json', JSON.stringify(prisoners))
+			await reply(act, 'Released from prison')
 		} else if (act.commandName === 'prisoners') {
 			if (prisoners.length === 0) {
 				await reply(act, 'No prisoners')
