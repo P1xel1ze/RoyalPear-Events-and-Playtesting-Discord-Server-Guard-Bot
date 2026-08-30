@@ -49,7 +49,9 @@ client.on('interactionCreate', async act => {
 			writeFileSync('prisoners.json', JSON.stringify(prisoners))
 			for (let i of prisoners) {
 				try {
-					(await act.guild?.members.fetch(i))!.roles.set([process.env.PRISONER_ROLE_ID!])
+					let usr = (await act.guild?.members.fetch(i))!
+					usr.roles.add(process.env.PRISONER_ROLE_ID!)
+					if (process.env.REG_USER_ROLE_ID !== undefined) usr.roles.remove(process.env.REG_USR_ROLE_ID!)
 					for (const channel of (await act.guild?.channels.fetch()!).values()) {
 						if (!channel || !channel?.isTextBased()) continue;
 						const fetchedMsgs = await channel.messages.fetch({ limit: 100 });
@@ -66,8 +68,9 @@ client.on('interactionCreate', async act => {
 			await reply(act, 'Sent evildoer to prison');
 		} else if (act.commandName === 'release') {
 			let prisoner: Discord.User = act.options.getUser('prisoner', true);
-			if (process.env.REG_USER_ROLE_ID === undefined) (await act.guild?.members.fetch(prisoner))!.roles.set([])
-			else (await act.guild?.members.fetch(prisoner))!.roles.set([process.env.REG_USR_ROLE_ID!])
+			let usr = (await act.guild?.members.fetch(prisoner))!
+			usr.roles.remove(process.env.PRISONER_ROLE_ID!)
+			if (process.env.REG_USER_ROLE_ID !== undefined) usr.roles.add(process.env.REG_USR_ROLE_ID!)
 			let index = prisoners.indexOf(prisoner.id as never)
 			if (index !== -1) prisoners.splice(index, 1);
 			writeFileSync('prisoners.json', JSON.stringify(prisoners))
