@@ -1,6 +1,6 @@
 {
   "name": "guard-bot",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "A Discord bot for one of RoyalPear's servers",
   "license": "BSD-3-Clause",
   "author": "P1xel1ze",
@@ -11,7 +11,9 @@
     "cmds": "node --env-file .env update-cmds.js"
   },
   "dependencies": {
-    "chalk": "^6.0.0",
     "discord.js": "^14.27.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

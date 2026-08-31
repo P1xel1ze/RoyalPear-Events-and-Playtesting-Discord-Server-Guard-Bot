@@ -1,9 +1,9 @@
 import * as Discord from 'discord.js';
-import chalk from 'chalk';
 import prisoners from './prisoners.json' with { type: "json" };
-import { writeFileSync } from 'node:fs'
+import { styleText } from 'node:util';
+import { writeFileSync } from 'node:fs';
 
-console.log(chalk.yellow.bold('Starting...'))
+console.log(styleText(['yellow', 'bold'], 'Starting...'));
 
 const client = new Discord.Client({
 	intents: [
@@ -15,9 +15,6 @@ const client = new Discord.Client({
 	]
 });
 
-function logError(msg: any): void {
-	console.error(chalk.red.bold(msg))
-}
 async function reply(act: Discord.ChatInputCommandInteraction, msg: string) {
 	return act.reply({ content: msg, flags: Discord.MessageFlags.Ephemeral })
 }
@@ -33,7 +30,7 @@ client.on('clientReady', async () => {
 			name: process.env.ACTIVITY_INFO!
 		}],
 	});
-	console.log(chalk.green.bold(`Logged in as ${client.user!.tag}`));
+	console.log(styleText(['green', 'bold'], 'Logged in as ' + client.user!.tag));
 });
 
 client.on('interactionCreate', async act => {
@@ -86,7 +83,7 @@ client.on('interactionCreate', async act => {
 			}
 			await reply(act, '@' + list.join(', @'))
 		}
-	} catch (e) {logError(e)}
+	} catch (e) {console.error(styleText(['red', 'bold'], (e as Error).stack!))}
 });
 
 client.login(process.env.BOT_TOKEN)
